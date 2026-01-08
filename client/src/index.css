@@ -60,6 +60,7 @@ body {
   margin: 0 auto;
   width: 100%;
   max-width: 68rem;
+  overflow-y: scroll;
 }
 @media screen and (min-width: 620px) {
   body {
@@ -159,7 +160,7 @@ body {
   padding: 2rem 1rem;
   position: relative;
   border-radius: 0.8rem;
-  text-align: center;
+  /* text-align: center; */
 }
 @media screen and (min-width: 550px) {
   .todoapp {
