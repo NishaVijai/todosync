@@ -2,6 +2,12 @@
 
 A modern, full-stack Todo application built with **React, Node.js/Express, and MongoDB**, featuring a clean and reactive interface for managing your daily tasks.
 
+## Preview
+https://todosync-react.netlify.app/
+
+## Screenshot
+<img width="3840" height="4070" alt="TodoSync" src="https://github.com/user-attachments/assets/be737bbc-5a87-4932-966b-3e8f90dbb39d" />
+
 ## Features
 
 - **CRUD Operations**: Add, edit, delete, and mark tasks as completed.  
