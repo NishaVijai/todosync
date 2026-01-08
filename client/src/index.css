@@ -134,21 +134,25 @@ body {
   margin-top: 0;
 }
 .stack-small > * + * {
-  margin-top: 1.25rem;
+  /* margin-top: 1.25rem; */
+  margin-top: 2.5rem;
 }
 .stack-large > * + * {
   margin-top: 2.5rem;
 }
 @media screen and (min-width: 550px) {
   .stack-small > * + * {
-    margin-top: 1.4rem;
+    /* margin-top: 1.4rem; */
+    margin-top: 2.5rem;
   }
   .stack-large > * + * {
-    margin-top: 2.8rem;
+    /* margin-top: 2.8rem; */
+    margin-top: 2.5rem;
   }
 }
 .stack-exception {
-  margin-top: 1.2rem;
+  /* margin-top: 1.2rem; */
+  margin-top: 2.5rem;
 }
 /* End global styles */
 
