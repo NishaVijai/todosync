@@ -1,8 +1,22 @@
-# React + Vite
+# TodoSync
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, full-stack Todo application built with **React, Node.js/Express, and MongoDB**, featuring a clean and reactive interface for managing your daily tasks.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **CRUD Operations**: Add, edit, delete, and mark tasks as completed.  
+- **Backend Synchronization**: All tasks are stored in MongoDB and updated in real-time.  
+- **Filtering**: Easily view all, active, or completed tasks.  
+- **Single Source of Truth**: State management via React Context API.  
+- **Accessibility & UX-focused**: Keyboard-friendly and visually clear interface.  
+
+## Overview
+
+TodoSync is a clean, efficient, and fully reactive task manager that keeps your daily to-dos in sync across sessions. Whether you want to quickly jot down tasks or organize your workflow, TodoSync ensures your tasks are always up to date and accessible.
+
+## Tech Stack
+
+- **Frontend**: React, Context API, PropTypes  
+- **Backend**: Node.js, Express  
+- **Database**: MongoDB  
+- **Other**: Vite (or Create React App), CORS, dotenv  

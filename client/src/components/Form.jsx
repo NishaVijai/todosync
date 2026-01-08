@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 export default function Form({ addTask }) {
   const [name, setName] = useState('');
@@ -6,9 +7,8 @@ export default function Form({ addTask }) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (name) {
-      console.log('input is not empty');
-      addTask(name);
+    if (name.trim()) {
+      addTask(name.trim()); // call context function to add task (backend sync)
       setName('');
     } else {
       alert('Input box is EMPTY, please enter a task to add');
@@ -16,7 +16,6 @@ export default function Form({ addTask }) {
   }
 
   function handleChange(e) {
-    console.log('handle change');
     setName(e.target.value);
   }
 
@@ -42,3 +41,8 @@ export default function Form({ addTask }) {
     </form>
   );
 }
+
+// PropTypes validation
+Form.propTypes = {
+  addTask: PropTypes.func.isRequired, // must be a function passed from context
+};

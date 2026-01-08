@@ -1,11 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
-import { nanoid } from 'nanoid';
-
+import { useContext, useRef, useEffect, useState } from 'react';
 import Form from './components/Form';
 import FilterButton from './components/FilterButton';
 import Todo from './components/Todo';
-
 import usePrevious from './utils/usePrevious.js';
+import { TasksContext } from './context/TasksContext';
 
 const FILTER_MAP = {
   All: () => true,
@@ -15,53 +13,26 @@ const FILTER_MAP = {
 
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
-function App({ data }) {
-  const [tasks, setTasks] = useState(data);
+export default function App() {
+  const { tasks, addTask, deleteTask, toggleTaskCompleted, editTask } = useContext(TasksContext);
   const [filter, setFilter] = useState('All');
 
   const listHeadingRef = useRef(null);
+  const prevTaskLength = usePrevious(tasks.length);
 
-  function addTask(name) {
-    let newTask = { id: `todo-${nanoid()}`, name, completed: false };
-    console.log('Task name: ', name);
-    setTasks([...tasks, newTask]);
-  }
-
-  function toggleTaskCompleted(id) {
-    const updatedTasks = tasks.map((task) => {
-      if (id === task.id) {
-        return { ...task, completed: !task.completed };
-      }
-      return task;
-    });
-    console.log('updatedTasks: ', updatedTasks);
-    setTasks(updatedTasks);
-  }
-
-  function deleteTask(id) {
-    const remainingTasks = tasks.filter((task) => id !== task.id);
-    console.log('Id: ', id);
-    console.log('remainingTasks: ', remainingTasks);
-    setTasks(remainingTasks);
-  }
-
-  function editTask(id, newName) {
-    const editedTaskList = tasks.map((task) => {
-      if (id === task.id) {
-        return { ...task, name: newName };
-      }
-      return task;
-    });
-    setTasks(editedTaskList);
-  }
+  useEffect(() => {
+    if (tasks.length < prevTaskLength) {
+      listHeadingRef.current.focus();
+    }
+  }, [tasks.length, prevTaskLength]);
 
   const taskList = tasks
     ?.filter(FILTER_MAP[filter])
-    .map((task) => (
+    .map(task => (
       <Todo
-        key={task.id}
-        id={task.id}
-        name={task.name}
+        key={task._id}
+        id={task._id}
+        name={task.text}
         completed={task.completed}
         toggleTaskCompleted={toggleTaskCompleted}
         deleteTask={deleteTask}
@@ -82,43 +53,21 @@ function App({ data }) {
     }
   }
 
-  const remainingTasksText =
-    tasks.length === 0 ? 'Empty - no task' : updateFilteredText(filter);
+  const remainingTasksText = tasks.length === 0 ? 'Empty - no task' : updateFilteredText(filter);
 
-  const filterList = FILTER_NAMES.map((name) => (
-    <FilterButton
-      key={name}
-      name={name}
-      isPressed={name === filter}
-      setFilter={setFilter}
-    />
+  const filterList = FILTER_NAMES.map(name => (
+    <FilterButton key={name} name={name} isPressed={name === filter} setFilter={setFilter} />
   ));
-
-  const prevTaskLength = usePrevious(tasks.length);
-
-  useEffect(() => {
-    if (tasks.length < prevTaskLength) {
-      listHeadingRef.current.focus();
-    }
-  }, [tasks.length, prevTaskLength]);
 
   return (
     <div className="todoapp stack-large">
-      <h1>TodoMatic</h1>
+      <h1>TodoSync</h1>
       <Form addTask={addTask} />
       <div className="filters btn-group stack-exception">{filterList}</div>
-      <h2 id="list-heading" tabIndex="-1" ref={listHeadingRef}>
-        {remainingTasksText}
-      </h2>
-      <ul
-        role="list"
-        className="todo-list stack-large stack-exception"
-        aria-labelledby="list-heading"
-      >
+      <h2 id="list-heading" tabIndex="-1" ref={listHeadingRef}>{remainingTasksText}</h2>
+      <ul role="list" className="todo-list stack-large stack-exception" aria-labelledby="list-heading">
         {taskList}
       </ul>
     </div>
   );
 }
-
-export default App;

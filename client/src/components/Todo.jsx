@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import usePrevious from '../utils/usePrevious.js';
 
 export default function Todo({
@@ -22,9 +23,13 @@ export default function Todo({
 
   function handleSubmit(e) {
     e.preventDefault();
-    editTask(id, newName);
-    setNewName('');
-    setIsEditing(false);
+    if (newName.trim()) {
+      editTask(id, newName.trim()); // update backend via context
+      setNewName('');
+      setIsEditing(false);
+    } else {
+      alert('Task name cannot be empty.');
+    }
   }
 
   const editingTemplate = (
@@ -49,11 +54,11 @@ export default function Todo({
           onClick={() => setIsEditing(false)}
         >
           Cancel
-          <span className="visually-hidden">renaming {name}</span>
+          <span className="visually-hidden"> renaming {name}</span>
         </button>
         <button type="submit" className="btn btn__primary todo-edit">
           Save
-          <span className="visually-hidden">new name for {name}</span>
+          <span className="visually-hidden"> new name for {name}</span>
         </button>
       </div>
     </form>
@@ -65,8 +70,8 @@ export default function Todo({
         <input
           id={id}
           type="checkbox"
-          defaultChecked={completed}
-          onChange={() => toggleTaskCompleted(id)}
+          checked={completed} // use checked to sync with backend
+          onChange={() => toggleTaskCompleted(id)} // calls backend PATCH via context
         />
         <label className="todo-label" htmlFor={id}>
           {name}
@@ -84,7 +89,7 @@ export default function Todo({
         <button
           type="button"
           className="btn btn__danger"
-          onClick={() => deleteTask(id)}
+          onClick={() => deleteTask(id)} // backend DELETE via context
         >
           Delete <span className="visually-hidden">{name}</span>
         </button>
@@ -102,3 +107,13 @@ export default function Todo({
 
   return <li className="todo">{isEditing ? editingTemplate : viewTemplate}</li>;
 }
+
+// PropTypes validation
+Todo.propTypes = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  completed: PropTypes.bool.isRequired,
+  toggleTaskCompleted: PropTypes.func.isRequired,
+  deleteTask: PropTypes.func.isRequired,
+  editTask: PropTypes.func.isRequired,
+};

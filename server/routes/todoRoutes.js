@@ -34,4 +34,25 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// UPDATE todo text or completed
+router.patch("/:id", async (req, res) => {
+  try {
+    const { text, completed } = req.body;
+
+    const updatedFields = {};
+    if (text !== undefined) updatedFields.text = text;
+    if (completed !== undefined) updatedFields.completed = completed;
+
+    const updatedTodo = await Todo.findByIdAndUpdate(
+      req.params.id,
+      updatedFields,
+      { new: true } // return updated document
+    );
+
+    res.json(updatedTodo);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 export default router;
