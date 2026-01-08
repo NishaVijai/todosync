@@ -159,6 +159,7 @@ body {
   padding: 2rem 1rem;
   position: relative;
   border-radius: 0.8rem;
+  text-align: center;
 }
 @media screen and (min-width: 550px) {
   .todoapp {
