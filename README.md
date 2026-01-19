@@ -104,7 +104,7 @@ The app also demonstrates best practices such as:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/NishaVijai/todosync.git
+git clone <repository-url>
 cd todosync
 ```
 
