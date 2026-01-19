@@ -13,6 +13,8 @@ export const TasksContext = createContext();
 
 export function TasksProvider({ children }) {
   const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
 
   // Fetch tasks safely on mount
   useEffect(() => {
@@ -32,6 +34,9 @@ export function TasksProvider({ children }) {
       } catch (err) {
         console.error("Error fetching tasks:", err);
         setTasks([]);
+      }
+      finally {
+        setLoading(false);
       }
     };
 
@@ -103,6 +108,7 @@ export function TasksProvider({ children }) {
     <TasksContext.Provider
       value={{
         tasks,
+        loading,
         addTask,
         deleteTask,
         toggleTaskCompleted,

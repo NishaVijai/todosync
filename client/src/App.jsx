@@ -14,31 +14,39 @@ const FILTER_MAP = {
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 export default function App() {
-  const { tasks, addTask, deleteTask, toggleTaskCompleted, editTask } = useContext(TasksContext);
+  const { tasks, addTask, deleteTask, toggleTaskCompleted, editTask, loading } = useContext(TasksContext);
   const [filter, setFilter] = useState('All');
 
   const listHeadingRef = useRef(null);
   const prevTaskLength = usePrevious(tasks.length);
 
+  // useEffect(() => {
+  //   if (tasks.length < prevTaskLength) {
+  //     listHeadingRef.current.focus();
+  //   }
+  // }, [tasks.length, prevTaskLength]);
+
   useEffect(() => {
-    if (tasks.length < prevTaskLength) {
-      listHeadingRef.current.focus();
+    if (prevTaskLength !== null && tasks.length < prevTaskLength) {
+      listHeadingRef.current?.focus();
     }
   }, [tasks.length, prevTaskLength]);
 
-  const taskList = tasks
-    ?.filter(FILTER_MAP[filter])
-    .map(task => (
-      <Todo
-        key={task._id}
-        id={task._id}
-        name={task.text}
-        completed={task.completed}
-        toggleTaskCompleted={toggleTaskCompleted}
-        deleteTask={deleteTask}
-        editTask={editTask}
-      />
-    ));
+  const taskList = loading
+    ? []
+    : tasks
+      ?.filter(FILTER_MAP[filter])
+      .map(task => (
+        <Todo
+          key={task._id}
+          id={task._id}
+          name={task.text}
+          completed={task.completed}
+          toggleTaskCompleted={toggleTaskCompleted}
+          deleteTask={deleteTask}
+          editTask={editTask}
+        />
+      ));
 
   const updateNoun = taskList.length > 1 ? 'tasks' : 'task';
 
@@ -53,7 +61,14 @@ export default function App() {
     }
   }
 
-  const remainingTasksText = tasks.length === 0 ? 'Empty - no task' : updateFilteredText(filter);
+  // const remainingTasksText = tasks.length === 0 ? 'Empty - no task' : updateFilteredText(filter);
+
+  const remainingTasksText = loading
+    ? 'Loading tasks...'
+    : tasks.length === 0
+      ? 'Empty - no task'
+      : updateFilteredText(filter);
+
 
   const filterList = FILTER_NAMES.map(name => (
     <FilterButton key={name} name={name} isPressed={name === filter} setFilter={setFilter} />
